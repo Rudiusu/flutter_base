@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/card/card_base.dart';
+import '../widgets/tab/tab_list.dart';
 
 class ScrollHomePage extends StatefulWidget {
   const ScrollHomePage({super.key});
@@ -9,35 +9,44 @@ class ScrollHomePage extends StatefulWidget {
 }
 
 class _ScrollHomePageState extends State<ScrollHomePage> {
+  ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('首页'), centerTitle: true),
       body: CustomScrollView(
+        controller: scrollController,
         slivers: [
           SliverToBoxAdapter(
-            child: Container(
-              color: Colors.blueAccent,
+            child: SizedBox(
               height: 180,
-              alignment: Alignment.center,
-              child: Text(
-                "轮播图",
-                style: TextStyle(color: Colors.white, fontSize: 24),
+              child: PageView(
+                children: List.generate(
+                  10,
+                  (index) => Card(child: Center(child: Text("卡片${index + 1}"))),
+                ),
               ),
             ),
           ),
           SliverPersistentHeader(delegate: TabBar(), pinned: true),
-          SliverToBoxAdapter(child: SizedBox(height: 10)),
-          SliverList.separated(
-            itemCount: 30,
-            itemBuilder: (content, index) => CardBase(
-              Container(
-                height: 120,
+          SliverPadding(
+            padding: EdgeInsets.all(10),
+            sliver: SliverGrid.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+              ),
+              itemCount: 80,
+              itemBuilder: (context, index) => Container(
                 alignment: Alignment.center,
-                child: Text('商品-${index + 1}', style: TextStyle(fontSize: 20)),
+                color: Colors.blueAccent,
+                child: Text(
+                  '商品-${index + 1}',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
               ),
             ),
-            separatorBuilder: (context, index) => SizedBox(height: 10),
           ),
         ],
       ),
@@ -46,42 +55,29 @@ class _ScrollHomePageState extends State<ScrollHomePage> {
 }
 
 class TabBar extends SliverPersistentHeaderDelegate {
+  int activeTabIndex = 0;
+  List<String> foodCategories = const [
+    '地方菜系',
+    '奶茶咖啡',
+    '便当简餐',
+    '汉堡披萨',
+    '小吃烧烤',
+    "鲜果蔬菜",
+  ];
   @override
   Widget build(
     BuildContext context,
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)],
-      ),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.only(right: 10),
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            margin: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black26, width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-            ),
-            child: Text('标签${index + 1}'),
-          );
-        },
-        itemCount: 10,
-      ),
-    );
+    return TabList(tabList: foodCategories);
   }
 
   @override
-  double get maxExtent => 60;
+  double get maxExtent => 50;
 
   @override
-  double get minExtent => 60;
+  double get minExtent => 50;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
