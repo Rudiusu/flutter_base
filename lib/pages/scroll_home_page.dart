@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/card/card_base.dart';
+// import '../widgets/card/card_base.dart';
 
 class ScrollHomePage extends StatefulWidget {
   const ScrollHomePage({super.key});
@@ -27,18 +27,40 @@ class _ScrollHomePageState extends State<ScrollHomePage> {
             ),
           ),
           SliverPersistentHeader(delegate: TabBar(), pinned: true),
-          SliverToBoxAdapter(child: SizedBox(height: 10)),
-          SliverList.separated(
-            itemCount: 30,
-            itemBuilder: (content, index) => CardBase(
-              Container(
-                height: 120,
-                alignment: Alignment.center,
-                child: Text('商品-${index + 1}', style: TextStyle(fontSize: 20)),
+          SliverPadding(
+            padding: .all(10),
+            sliver: SliverGrid.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                mainAxisExtent: 200,
               ),
+              itemBuilder: (context, index) {
+                return Container(
+                  color: Colors.red,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "商品${index + 1}",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                );
+              },
+              itemCount: 20,
             ),
-            separatorBuilder: (context, index) => SizedBox(height: 10),
           ),
+
+          // SliverList.separated(
+          //   itemCount: 30,
+          //   itemBuilder: (content, index) => CardBase(
+          //     Container(
+          //       height: 120,
+          //       alignment: Alignment.center,
+          //       child: Text('商品-${index + 1}', style: TextStyle(fontSize: 20)),
+          //     ),
+          //   ),
+          //   separatorBuilder: (context, index) => SizedBox(height: 10),
+          // ),
         ],
       ),
     );
