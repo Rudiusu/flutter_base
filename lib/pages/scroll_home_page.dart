@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import '../widgets/card/card_base.dart';
+// import './good_detail.dart';
 
 class ScrollHomePage extends StatefulWidget {
   const ScrollHomePage({super.key});
@@ -16,13 +16,20 @@ class _ScrollHomePageState extends State<ScrollHomePage> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Container(
-              color: Colors.blueAccent,
-              height: 180,
-              alignment: Alignment.center,
-              child: Text(
-                "轮播图",
-                style: TextStyle(color: Colors.white, fontSize: 24),
+            child: SizedBox(
+              height: 200,
+              child: PageView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    color: Colors.blue,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "轮播图${index + 1}",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  );
+                },
+                itemCount: 5,
               ),
             ),
           ),
@@ -37,12 +44,27 @@ class _ScrollHomePageState extends State<ScrollHomePage> {
                 mainAxisExtent: 200,
               ),
               itemBuilder: (context, index) {
-                return Container(
-                  color: Colors.red,
-                  alignment: Alignment.center,
-                  child: Text(
-                    "商品${index + 1}",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/goodDetails',
+                      arguments: {"id": index + 1},
+                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => GoodDetail(id: index + 1),
+                    //   ),
+                    // );
+                  },
+                  child: Container(
+                    color: Colors.red,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "商品${index + 1}",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
                   ),
                 );
               },

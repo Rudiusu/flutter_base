@@ -18,7 +18,6 @@ class DioUtils {
       ..connectTimeout = Duration(seconds: 10)
       ..sendTimeout = Duration(seconds: 10)
       ..receiveTimeout = Duration(seconds: 10);
-
     _addInterceptor();
   }
   void _addInterceptor() {
